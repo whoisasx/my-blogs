@@ -3,170 +3,245 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>iamasx — Blog</title>
+  <title>whoisasx - Blogs</title>
   <link rel="stylesheet" href="assets/css/shared.css">
   <style>
-    html { scroll-behavior: smooth; }
+    :root {
+      --ink: #231a22;
+      --ink-soft: #62555f;
+      --paper: #fff9f1;
+      --line: rgba(35, 26, 34, 0.16);
+      --line-strong: rgba(35, 26, 34, 0.28);
+      --coral: #e96b50;
+      --gold: #dfa94f;
+      --mint: #80d9c7;
+      --teal: #177e78;
+      --plum: #51334c;
+      --deep: #061d20;
+      --pool: #e8f7f2;
+      --chrome: #231a22;
+      --p: 0;
+      --bg: #061d20;
+      --bg-2: rgba(6, 29, 32, 0.78);
+      --panel: rgba(232, 247, 242, 0.58);
+      --panel-2: rgba(250, 226, 205, 0.48);
+      --ink-dim: #443840;
+      --ink-faint: #695361;
+      --accent: #177e78;
+      --accent-dim: #80d9c7;
+      --radius: 8px;
+      --radius-sm: 8px;
+    }
 
-    /* ── Ambient background ── */
-    .ambient {
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 320px;
+      overflow-x: hidden;
+      background: var(--deep);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body,
+    button,
+    a,
+    h1,
+    h2,
+    h3,
+    .site-name,
+    .section-label span,
+    .tag {
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .wrap {
+      max-width: 1160px;
+    }
+
+    .backdrop {
       position: fixed;
       inset: 0;
-      z-index: -1;
+      z-index: 0;
       overflow: hidden;
       pointer-events: none;
     }
 
-    .orb {
+    .sky-sheet {
       position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.12;
-      animation: float 20s ease-in-out infinite;
+      inset: -120vh 0 0;
+      height: 340vh;
+      transform: translateY(calc(var(--p) * -210vh));
+      background:
+        linear-gradient(
+          180deg,
+          #ffe8b9 0%,
+          #f7b55d 13%,
+          #e96b50 29%,
+          #a66177 45%,
+          #566d93 58%,
+          #2d6671 72%,
+          #0d3d40 88%,
+          #061d20 100%
+        );
     }
 
-    .orb-1 {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, #7dd3fc, transparent 70%);
-      top: -10%; left: -10%;
-      animation-delay: 0s;
-    }
-
-    .orb-2 {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, #a78bfa, transparent 70%);
-      top: 40%; right: -15%;
-      animation-delay: -7s;
-      animation-duration: 25s;
-    }
-
-    .orb-3 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, #38bdf8, transparent 70%);
-      bottom: -10%; left: 30%;
-      animation-delay: -14s;
-      animation-duration: 22s;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      25% { transform: translate(40px, -30px) scale(1.05); }
-      50% { transform: translate(-20px, 20px) scale(0.95); }
-      75% { transform: translate(30px, 40px) scale(1.02); }
-    }
-
-    /* ── Dot grid ── */
-    .dot-grid {
-      position: fixed;
+    .hero-image {
+      position: absolute;
       inset: 0;
-      z-index: -1;
-      background-image: radial-gradient(circle, rgba(125, 211, 252, 0.04) 1px, transparent 1px);
-      background-size: 32px 32px;
-      pointer-events: none;
+      background-image:
+        linear-gradient(90deg, rgba(255, 232, 185, 0.78), rgba(255, 232, 185, 0.12) 42%, rgba(6, 29, 32, 0.5)),
+        url("assets/img/coding.png");
+      background-size: cover;
+      background-position: center;
+      opacity: clamp(0, calc(0.72 - var(--p) * 1.2), 0.72);
+      transform: scale(calc(1.03 + var(--p) * 0.04));
+      filter: saturate(0.9) contrast(0.95);
     }
 
-    /* ── Mouse glow ── */
-    .mouse-glow {
+    .sun {
       position: fixed;
-      width: 500px;
-      height: 500px;
+      left: 50%;
+      top: calc(12vh + var(--p) * 54vh);
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(125, 211, 252, 0.06), transparent 70%);
-      pointer-events: none;
-      z-index: -1;
-      transform: translate(-50%, -50%);
-      transition: left 0.3s ease-out, top 0.3s ease-out;
+      transform: translateX(-50%);
+      background:
+        radial-gradient(circle at 45% 35%, #fff9e8 0 24%, #ffd37e 48%, rgba(233, 107, 80, 0.7) 74%, transparent 100%);
+      box-shadow:
+        0 0 90px rgba(255, 211, 126, 0.45),
+        0 0 180px rgba(233, 107, 80, 0.22);
+      opacity: clamp(0, calc(0.9 - var(--p) * 1.6), 0.9);
     }
 
-    /* ── Nav ── */
+    .signal-grid {
+      position: absolute;
+      inset: 0;
+      opacity: clamp(0, calc((var(--p) - 0.18) * 1.8), 0.24);
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(180deg, transparent, black 24%, black 76%, transparent);
+    }
+
+    .water-tint {
+      position: absolute;
+      inset: 0;
+      opacity: clamp(0, calc((var(--p) - 0.42) * 2.5), 1);
+      background:
+        radial-gradient(ellipse 80% 44% at 50% 0%, rgba(128, 217, 199, 0.34), transparent 65%),
+        linear-gradient(180deg, rgba(6, 29, 32, 0), rgba(6, 29, 32, 0.84));
+    }
+
+    .vignette {
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 180px rgba(6, 12, 16, 0.56);
+      opacity: calc(0.22 + var(--p) * 0.44);
+    }
+
+    .grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.045;
+      mix-blend-mode: overlay;
+      background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0 1px, transparent 1px 3px);
+    }
+
     .site-nav {
-      background: rgba(15, 18, 22, 0.6);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      animation: fadeDown 0.8s ease-out;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      border: 0;
+      background: transparent;
+      color: var(--chrome);
+      pointer-events: none;
+      transition: color 0.3s ease;
     }
 
-    /* ── Hero header ── */
-    .site-header {
-      padding: 100px 0 64px;
-      text-align: center;
-      position: relative;
-    }
-
-    .site-header .eyebrow {
-      display: inline-flex;
+    .site-nav .wrap {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--accent);
-      margin-bottom: 24px;
-      opacity: 0;
-      animation: fadeUp 0.7s ease-out 0.2s forwards;
+      width: 100%;
+      max-width: none;
+      height: auto;
+      padding: 22px 28px;
     }
 
-    .site-header .eyebrow .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2s ease-in-out infinite;
-      box-shadow: 0 0 12px rgba(125, 211, 252, 0.5);
+    .site-name,
+    .nav-context,
+    .depth {
+      pointer-events: auto;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     }
 
-    .site-header h1 {
-      font-size: 72px;
+    .site-name {
+      color: currentColor;
+      font-size: 0.98rem;
       font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, #fff 0%, #7dd3fc 50%, #a78bfa 100%);
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: fadeUp 0.7s ease-out 0.35s forwards, gradientShift 8s ease-in-out infinite;
-      opacity: 0;
     }
 
-    .site-header .sub {
-      font-size: 18px;
-      color: var(--ink-dim);
-      line-height: 1.6;
-      max-width: 440px;
-      margin: 0 auto;
-      opacity: 0;
-      animation: fadeUp 0.7s ease-out 0.5s forwards;
+    .site-name span {
+      color: var(--coral);
     }
 
-    .header-line {
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), #a78bfa);
-      margin: 40px auto 0;
-      border-radius: 2px;
-      opacity: 0;
-      animation: scaleIn 0.6s ease-out 0.7s forwards;
+    .site-name:hover {
+      color: currentColor;
     }
 
-    /* ── Section title ── */
+    .nav-context,
+    .depth {
+      color: currentColor;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      opacity: 0.88;
+    }
+
+    .nav-context {
+      text-align: center;
+    }
+
+    .depth {
+      justify-self: end;
+    }
+
+    .page-shell,
+    .site-footer {
+      position: relative;
+      z-index: 10;
+    }
+
+    .posts-section {
+      position: relative;
+      min-height: 100vh;
+      padding: 128px 0 12vh;
+    }
+
     .section-label {
       display: flex;
       align-items: center;
       gap: 16px;
       margin-bottom: 32px;
-      opacity: 0;
-      animation: fadeUp 0.7s ease-out 0.8s forwards;
+      color: var(--pool);
     }
 
     .section-label span {
       font-size: 13px;
-      font-weight: 600;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--ink-faint);
+      color: var(--mint);
       white-space: nowrap;
     }
 
@@ -174,31 +249,36 @@
       content: "";
       flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, var(--line), transparent);
+      background: linear-gradient(90deg, rgba(128, 217, 199, 0.34), transparent);
     }
 
-    /* ── Blog grid ── */
     .blog-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      min-width: 0;
     }
 
-    /* ── Blog card ── */
     .blog-card {
-      --glow: rgba(125, 211, 252, 0);
       display: block;
       position: relative;
-      background: linear-gradient(135deg, var(--panel), var(--panel-2));
-      border: 1px solid var(--line);
+      min-width: 0;
+      min-height: 282px;
+      border: 1px solid rgba(18, 105, 101, 0.24);
       border-radius: var(--radius);
-      padding: 36px 40px;
+      background:
+        linear-gradient(135deg, rgba(224, 241, 235, 0.74), rgba(250, 226, 205, 0.48)),
+        rgba(232, 247, 242, 0.54);
+      padding: 22px;
       color: inherit;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 44px rgba(5, 30, 32, 0.1);
+      opacity: 0;
       transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
                   border-color 0.35s ease,
+                  background 0.35s ease,
                   box-shadow 0.35s ease;
-      overflow: hidden;
-      opacity: 0;
       animation: fadeUp 0.6s ease-out forwards;
     }
 
@@ -207,14 +287,15 @@
       position: absolute;
       inset: 0;
       border-radius: var(--radius);
-      background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%),
-                    rgba(125, 211, 252, 0.06), transparent 60%);
+      background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(128, 217, 199, 0.16), transparent 60%);
       opacity: 0;
       transition: opacity 0.35s ease;
       pointer-events: none;
     }
 
-    .blog-card:hover::before { opacity: 1; }
+    .blog-card:hover::before {
+      opacity: 1;
+    }
 
     .blog-card::after {
       content: "";
@@ -223,17 +304,15 @@
       right: 20px;
       width: 36px;
       height: 36px;
-      border-radius: 50%;
-      background: rgba(125, 211, 252, 0.06);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.3s, transform 0.3s;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%237dd3fc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 11L11 5M11 5H6M11 5V10'/%3E%3C/svg%3E");
+      border: 1px solid rgba(23, 126, 120, 0.28);
+      border-radius: 8px;
+      background: rgba(128, 217, 199, 0.18);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23177e78' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 11L11 5M11 5H6M11 5V10'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: center;
       opacity: 0;
       transform: translate(4px, -4px);
+      transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s ease;
     }
 
     .blog-card:hover::after {
@@ -241,41 +320,50 @@
       transform: translate(0, 0);
     }
 
-    .blog-card:hover {
-      border-color: rgba(125, 211, 252, 0.2);
+    .blog-card:hover,
+    .blog-card:focus-visible {
+      border-color: rgba(23, 126, 120, 0.45);
+      background:
+        linear-gradient(135deg, rgba(228, 244, 238, 0.86), rgba(252, 232, 214, 0.62)),
+        rgba(232, 247, 242, 0.62);
+      color: inherit;
       transform: translateY(-4px);
-      box-shadow: 0 8px 40px rgba(125, 211, 252, 0.07),
-                  0 0 0 1px rgba(125, 211, 252, 0.05);
+      box-shadow: 0 18px 48px rgba(5, 30, 32, 0.16);
+      outline: none;
     }
 
     .blog-card .card-number {
-      font-size: 12px;
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-      color: var(--accent);
-      opacity: 0.4;
       margin-bottom: 14px;
-      letter-spacing: 0.02em;
+      color: var(--teal);
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 12px;
+      opacity: 0.76;
     }
 
     .blog-card .card-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.02em;
+      max-width: calc(100% - 46px);
       margin-bottom: 10px;
-      line-height: 1.25;
-      transition: color 0.25s;
+      color: #1f1a20;
+      font-size: 1.32rem;
+      font-weight: 780;
+      line-height: 1.18;
+      transition: color 0.25s ease;
+      overflow-wrap: anywhere;
     }
 
-    .blog-card:hover .card-title { color: var(--accent); }
+    .blog-card:hover .card-title,
+    .blog-card:focus-visible .card-title {
+      color: var(--teal);
+    }
 
     .blog-card .card-meta {
       display: flex;
+      flex-wrap: wrap;
       gap: 18px;
-      font-size: 13px;
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-      color: var(--ink-faint);
       margin-bottom: 14px;
+      color: #695361;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 13px;
     }
 
     .blog-card .card-meta span {
@@ -288,15 +376,17 @@
       width: 3px;
       height: 3px;
       border-radius: 50%;
-      background: var(--ink-faint);
+      background: #695361;
       opacity: 0.5;
     }
 
     .blog-card .card-desc {
-      font-size: 15px;
-      color: var(--ink-dim);
-      line-height: 1.65;
       margin-bottom: 20px;
+      color: #2d2730;
+      font-size: 15px;
+      font-weight: 520;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
     }
 
     .blog-card .card-tags {
@@ -307,40 +397,60 @@
 
     .tag {
       display: inline-block;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 4px 12px;
+      border: 1px solid rgba(18, 105, 101, 0.16);
       border-radius: 20px;
-      background: rgba(125, 211, 252, 0.06);
-      border: 1px solid rgba(125, 211, 252, 0.1);
-      color: var(--accent);
-      transition: background 0.25s, border-color 0.25s;
+      background: rgba(232, 247, 242, 0.42);
+      color: #251f27;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      transition: background 0.25s ease, border-color 0.25s ease;
     }
 
-    .blog-card:hover .tag {
-      background: rgba(125, 211, 252, 0.1);
-      border-color: rgba(125, 211, 252, 0.2);
+    .blog-card:hover .tag,
+    .blog-card:focus-visible .tag {
+      border-color: rgba(23, 126, 120, 0.28);
+      background: rgba(128, 217, 199, 0.2);
+    }
+
+    .read-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 18px;
+      color: var(--teal);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.72rem;
+      font-style: normal;
+      font-weight: 700;
     }
 
     .empty-state {
-      text-align: center;
       padding: 80px 20px;
-      color: var(--ink-faint);
+      color: rgba(232, 247, 242, 0.72);
       font-size: 15px;
+      text-align: center;
     }
 
-    /* ── Footer ── */
     .site-footer {
-      opacity: 0;
-      animation: fadeUp 0.6s ease-out 1.2s forwards;
+      margin-top: 0;
+      border-top: 1px solid rgba(128, 217, 199, 0.2);
+      background: rgba(6, 29, 32, 0.42);
+      color: var(--pool);
     }
 
     .footer-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      width: 100%;
+    }
+
+    .site-footer p {
+      color: rgba(232, 247, 242, 0.46);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
     }
 
     .footer-links {
@@ -349,107 +459,164 @@
     }
 
     .footer-links a {
+      color: rgba(232, 247, 242, 0.62);
       font-size: 13px;
-      color: var(--ink-faint);
-      transition: color 0.2s;
+      transition: color 0.2s ease;
     }
 
-    .footer-links a:hover { color: var(--accent); }
+    .footer-links a:hover {
+      color: var(--mint);
+    }
 
-    /* ── Animations ── */
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .blog-card {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
     }
 
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scaleX(0); }
-      to { opacity: 1; transform: scaleX(1); }
+    @media (max-width: 900px) {
+      .nav-context {
+        display: none;
+      }
+
+      .site-nav .wrap {
+        grid-template-columns: 1fr auto;
+      }
+
+      .blog-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 12px rgba(125, 211, 252, 0.5); }
-      50% { opacity: 0.5; box-shadow: 0 0 20px rgba(125, 211, 252, 0.8); }
+    @media (max-width: 700px) {
+      .site-nav .wrap {
+        grid-template-columns: 1fr;
+        padding: 18px;
+      }
+
+      .depth {
+        display: none;
+      }
+
+      .sun {
+        left: 74%;
+        width: 126px;
+        height: 126px;
+        opacity: clamp(0, calc(0.64 - var(--p) * 1.4), 0.64);
+      }
+
+      .posts-section {
+        padding-top: 96px;
+      }
     }
 
-    @keyframes gradientShift {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    /* ── Responsive ── */
     @media (max-width: 560px) {
-      .site-header { padding: 64px 0 40px; }
-      .site-header h1 { font-size: 44px; }
-      .site-header .sub { font-size: 16px; }
-      .blog-card { padding: 24px 22px; }
-      .blog-card .card-title { font-size: 20px; }
-      .orb { filter: blur(60px); opacity: 0.08; }
+      .wrap {
+        padding: 0 18px;
+      }
+
+      .blog-grid {
+        width: min(354px, calc(100vw - 36px));
+        max-width: 100%;
+      }
+
+      .blog-card {
+        width: 100%;
+        max-width: 100%;
+        min-height: auto;
+        padding: 24px 22px;
+      }
+
+      .blog-card .card-title {
+        max-width: 100%;
+        font-size: 20px;
+      }
+
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Ambient background -->
-  <div class="ambient">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+  <div class="backdrop" aria-hidden="true">
+    <div class="sky-sheet"></div>
+    <div class="hero-image"></div>
+    <div class="sun"></div>
+    <div class="signal-grid"></div>
+    <div class="water-tint"></div>
+    <div class="vignette"></div>
+    <div class="grain"></div>
   </div>
-  <div class="dot-grid"></div>
-  <div class="mouse-glow" id="mouseGlow"></div>
 
-  <nav class="site-nav">
+  <nav class="site-nav" aria-label="Blog progress">
     <div class="wrap">
-      <a href="./" class="site-name">iamasx</a>
+      <a href="./" class="site-name">whoisasx<span>.</span></a>
+      <span class="nav-context">blogs / notes / change logs</span>
+      <span class="depth" id="depth">blog index</span>
     </div>
   </nav>
 
-  <div class="wrap">
-    <header class="site-header">
-      <div class="eyebrow"><span class="dot"></span>Blog</div>
-      <h1>Writing</h1>
-      <p class="sub">Engineering notes, deep dives, and change logs.</p>
-      <div class="header-line"></div>
-    </header>
-
-    <div class="section-label"><span>Recent Posts</span></div>
-
-    <div id="blog-list" class="blog-grid"></div>
-
-    <noscript>
-      <div class="empty-state">
-        <p>This page requires JavaScript to list blog posts.</p>
-      </div>
-    </noscript>
-  </div>
-
-  <footer class="site-footer">
+  <main class="page-shell">
     <div class="wrap">
-      <div class="footer-inner">
-        <p>&copy; 2025 iamasx</p>
-        <div class="footer-links">
-          <a href="https://github.com/iamasx" target="_blank" rel="noopener">GitHub</a>
-        </div>
-      </div>
+      <section id="posts" class="posts-section" aria-labelledby="posts-title">
+        <div class="section-label"><span id="posts-title">[ blogs ]</span></div>
+        <div id="blog-list" class="blog-grid"></div>
+
+        <noscript>
+          <div class="empty-state">
+            <p>This page requires JavaScript to list blog posts.</p>
+          </div>
+        </noscript>
+      </section>
     </div>
-  </footer>
+  </main>
 
   <script src="assets/js/blogs.js"></script>
   <script>
     (function () {
-      // Mouse glow follow
-      var glow = document.getElementById('mouseGlow');
-      document.addEventListener('mousemove', function (e) {
-        glow.style.left = e.clientX + 'px';
-        glow.style.top = e.clientY + 'px';
-      });
+      var root = document.documentElement;
+      var depth = document.getElementById('depth');
+      var ticking = false;
 
-      // Card spotlight effect — track mouse position relative to each card
+      function updateProgress() {
+        var max = document.body.scrollHeight - window.innerHeight;
+        var progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+        root.style.setProperty('--p', progress.toFixed(4));
+        root.style.setProperty('--chrome', progress > 0.44 ? '#e8f7f2' : '#231a22');
+        ticking = false;
+      }
+
+      function requestProgress() {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(updateProgress);
+        }
+      }
+
+      updateProgress();
+      window.addEventListener('scroll', requestProgress, { passive: true });
+      window.addEventListener('resize', updateProgress);
+
       document.addEventListener('mousemove', function (e) {
         var cards = document.querySelectorAll('.blog-card');
         cards.forEach(function (card) {
@@ -461,7 +628,6 @@
         });
       });
 
-      // Render blog posts
       var posts = window.BLOG_POSTS || [];
       var container = document.getElementById('blog-list');
 
@@ -471,21 +637,27 @@
 
       if (posts.length === 0) {
         container.innerHTML = '<div class="empty-state"><p>No posts yet.</p></div>';
+        if (depth) depth.textContent = '0 posts';
+        updateProgress();
         return;
       }
+
+      if (depth) depth.textContent = posts.length + ' posts';
 
       function formatDate(dateStr) {
         var d = new Date(dateStr + 'T00:00:00');
         return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       }
 
-      function padNum(n) { return n < 10 ? '0' + n : '' + n; }
+      function padNum(n) {
+        return n < 10 ? '0' + n : '' + n;
+      }
 
       posts.forEach(function (post, i) {
         var card = document.createElement('a');
         card.href = 'posts/' + post.slug + '/';
         card.className = 'blog-card';
-        card.style.animationDelay = (0.9 + i * 0.12) + 's';
+        card.style.animationDelay = (0.08 + i * 0.08) + 's';
 
         var tagsHtml = '';
         if (post.tags && post.tags.length) {
@@ -503,10 +675,13 @@
             '<span>' + post.readingTime + ' read</span>' +
           '</div>' +
           '<div class="card-desc">' + post.description + '</div>' +
-          tagsHtml;
+          tagsHtml +
+          '<span class="read-note">read note &rarr;</span>';
 
         container.appendChild(card);
       });
+
+      updateProgress();
     })();
   </script>
 </body>
